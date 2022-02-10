@@ -8,10 +8,11 @@ import Web3Modal from 'web3modal'
 const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0')
 
 import {
-  nftaddress, nftmarketaddress
+  nftaddress, nftmarketaddress, nftaddress1155
 } from '../config'
 
 import NFT from '../artifacts/contracts/NFT.sol/NFT.json'
+import NFT1155 from '../artifacts/contracts/NFT1155.sol/NFT1155.json'
 import Market from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json'
 
 /**
@@ -66,18 +67,28 @@ export default function CreateItem() {
   }
 
   async function createSale(url) {
+    console.log('createSale fileUrl: ', url);
     const web3Modal = new Web3Modal()
     const connection = await web3Modal.connect()
     const provider = new ethers.providers.Web3Provider(connection)    
     const signer = provider.getSigner()
 
+    console.log('signer: ', signer)
     /* next, create the item */
-    let contract = new ethers.Contract(nftaddress, NFT.abi, signer)
-    let transaction = await contract.createToken(url)
+    // // ERC721
+    // let contract = new ethers.Contract(nftaddress, NFT.abi, signer)
+    // let transaction = await contract.createToken(url)
+    // ERC1155
+    let contract = new ethers.Contract(nftaddress1155, NFT1155.abi, signer)
+    let transaction = await contract.mintNFT(url)
     let tx = await transaction.wait()
     let event = tx.events[0]
-    let value = event.args[2]
+    //  // ERC721
+    // let value = event.args[2]
+     // ERC1155
+    let value = event.args[3]
     let tokenId = value.toNumber()
+    console.log('tokenId: ', tokenId);
     const price = ethers.utils.parseUnits(formInput.price, 'ether')
 
     /* then list the item for sale on the marketplace */
@@ -85,7 +96,8 @@ export default function CreateItem() {
     let listingPrice = await contract.getListingPrice()
     listingPrice = listingPrice.toString()
 
-    transaction = await contract.createMarketItem(nftaddress, tokenId, price, { value: listingPrice })
+    // transaction = await contract.createMarketItem(nftaddress, tokenId, price, true, { value: listingPrice })
+    transaction = await contract.createMarketItem(nftaddress1155, tokenId, price, false, { value: listingPrice })
     await transaction.wait()
     router.push('/')
   }

@@ -5,11 +5,12 @@ import axios from 'axios'
 import Web3Modal from "web3modal"
 
 import {
-  nftmarketaddress, nftaddress
+  nftmarketaddress, nftaddress, nftaddress1155
 } from '../config'
 
 import Market from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json'
 import NFT from '../artifacts/contracts/NFT.sol/NFT.json'
+import NFT1155 from '../artifacts/contracts/NFT1155.sol/NFT1155.json'
 
 /**
  * Creator dashboard
@@ -41,11 +42,16 @@ export default function CreatorDashboard() {
     const signer = provider.getSigner()
 
     const marketContract = new ethers.Contract(nftmarketaddress, Market.abi, signer)
-    const tokenContract = new ethers.Contract(nftaddress, NFT.abi, provider)
+    // const tokenContract = new ethers.Contract(nftaddress, NFT.abi, provider)
+    const tokenContract = new ethers.Contract(nftaddress1155, NFT1155.abi, provider)
     const data = await marketContract.fetchItemsCreated()
 
     const items = await Promise.all(data.map(async i => {
-      const tokenUri = await tokenContract.tokenURI(i.tokenId)
+      console.log('creator i.tokenId: ', i.tokenId)
+      // // ERC721
+      // const tokenUri = await tokenContract.tokenURI(i.tokenId)
+      // ERC1155
+      const tokenUri = await tokenContract.uri(i.tokenId)
       console.log('dashboard loadNFTs tokenUri :', tokenUri)
       const meta = await axios.get(tokenUri)
       let price = ethers.utils.formatUnits(i.price.toString(), 'ether')

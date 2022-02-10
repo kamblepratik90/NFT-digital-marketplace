@@ -1,10 +1,17 @@
-export const nftmarketaddress = "0x16ae448E10179e3d18bB6163cBc52f16453EF766"
-export const nftaddress = "0x35e487147239aB2Ea121dEBe06D54dBe90AC8ba3"
+export const nftmarketaddress = "0xf89be2dC352f97eb4A724BaE833762A7e1796Bf0"
+export const nftaddress = "0x5d90E2FA132C8bEae8Ded7557051CE609AD38BaF"
+export const nftaddress1155 = "0x09dd869F1eE88378566e16842cc26DC55A7F484c"
 
 //local
-// nftMarket deployed to: 0x5FbDB2315678afecb367f032d93F642f64180aa3
-// nft deployed to: 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
+// nftMarket deployed to: 0x8A791620dd6260079BF849Dc5567aDC3F2FdC318
+// nft deployed to: 0x610178dA211FEF7D417bC0e6FeD39F05609AD788
+// nft1155 deployed to: 0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e
 
 // mumbai
 // nftMarket deployed to: 0x16ae448E10179e3d18bB6163cBc52f16453EF766
 // nft deployed to: 0x35e487147239aB2Ea121dEBe06D54dBe90AC8ba3
+
+// mumbai brave remix
+// market 0xf89be2dC352f97eb4A724BaE833762A7e1796Bf0
+// NFT721 0x5d90E2FA132C8bEae8Ded7557051CE609AD38BaF
+// NFT1155 0x09dd869F1eE88378566e16842cc26DC55A7F484c

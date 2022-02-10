@@ -5,11 +5,12 @@ import axios from 'axios'
 import Web3Modal from "web3modal"
 
 import {
-  nftaddress, nftmarketaddress
+  nftaddress, nftmarketaddress, nftaddress1155
 } from '../config'
 
 import NFT from '../artifacts/contracts/NFT.sol/NFT.json';
 import Market from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json';
+import NFT1155 from '../artifacts/contracts/NFT1155.sol/NFT1155.json'
 
 /**
  * Querying the contract for marketplace items
@@ -29,19 +30,27 @@ export default function Home() {
 
   async function loadNFTs() {
     /* create a generic provider and query for unsold market items */
-    // const RPC_URL = process.env.TESTNET_RPC_URL;
-    // console.log('provider: ', RPC_URL)
-    const provider = new ethers.providers.JsonRpcProvider('https://speedy-nodes-nyc.moralis.io/1dd7e4f38823c504f532c532/polygon/mumbai')
-    const tokenContract = new ethers.Contract(nftaddress, NFT.abi, provider)
-    const marketContract = new ethers.Contract(nftmarketaddress, Market.abi, provider)
-    const data = await marketContract.fetchMarketItems()
+    const web3Modal = new Web3Modal()
+    const connection = await web3Modal.connect()
+    const provider = new ethers.providers.Web3Provider(connection)
 
+    // // ERC721
+    // const tokenContract = new ethers.Contract(nftaddress, NFT.abi, provider)
+    // // ERC1155
+    const tokenContract = new ethers.Contract(nftaddress1155, NFT1155.abi, provider)
+    const marketContract = new ethers.Contract(nftmarketaddress, Market.abi, provider)
+
+
+    const data = await marketContract.fetchMarketItems()
     /*
     *  map over items returned from smart contract and format 
     *  them as well as fetch their token metadata
     */
     const items = await Promise.all(data.map(async i => {
-      const tokenUri = await tokenContract.tokenURI(i.tokenId)
+     // // ERC721
+      // const tokenUri = await tokenContract.tokenURI(i.tokenId)
+      // ERC1155
+      const tokenUri = await tokenContract.uri(i.tokenId)
       console.log('home loadNFTs tokenUri :', tokenUri)
       const meta = await axios.get(tokenUri)
       let price = ethers.utils.formatUnits(i.price.toString(), 'ether')
@@ -70,7 +79,10 @@ export default function Home() {
 
     /* user will be prompted to pay the asking proces to complete the transaction */
     const price = ethers.utils.parseUnits(nft.price.toString(), 'ether')   
-    const transaction = await contract.createMarketSale(nftaddress, nft.tokenId, {
+    // const transaction = await contract.createMarketSale(nftaddress, nft.tokenId, true, {
+    //   value: price
+    // })
+    const transaction = await contract.createMarketSale(nftaddress1155, nft.tokenId, false, {
       value: price
     })
     await transaction.wait()
