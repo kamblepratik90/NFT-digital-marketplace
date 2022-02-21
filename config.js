@@ -1,6 +1,11 @@
-export const nftmarketaddress = "0xf89be2dC352f97eb4A724BaE833762A7e1796Bf0"
+// export const nftmarketaddress = "0xf89be2dC352f97eb4A724BaE833762A7e1796Bf0"
+// export const nftaddress = "0x5d90E2FA132C8bEae8Ded7557051CE609AD38BaF"
+// export const nftaddress1155 = "0x09dd869F1eE88378566e16842cc26DC55A7F484c"
+
+// 21 Feb
+export const nftmarketaddress = "0x1306DF52142218D8924256F05B3dB8E81e00bD7c"
 export const nftaddress = "0x5d90E2FA132C8bEae8Ded7557051CE609AD38BaF"
-export const nftaddress1155 = "0x09dd869F1eE88378566e16842cc26DC55A7F484c"
+export const nftaddress1155 = "0x8b1745914251c8974E179048332df1E9dE165063"
 
 //local
 // nftMarket deployed to: 0x8A791620dd6260079BF849Dc5567aDC3F2FdC318

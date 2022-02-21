@@ -1,6 +1,7 @@
 require("@nomiclabs/hardhat-waffle");
 require("dotenv").config();
 require("solidity-coverage");
+require("hardhat-tracer");
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -28,7 +29,17 @@ module.exports = {
     }
   },
   solidity: {
-    version: "0.8.4",
+    compilers: [
+      {
+        version: "0.8.4",
+      },
+      {
+        version: "0.6.6",
+      },
+      {
+        version: "0.4.24",
+      },
+    ],
     settings: {
       optimizer: {
         enabled: true,

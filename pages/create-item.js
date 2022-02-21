@@ -97,7 +97,9 @@ export default function CreateItem() {
     listingPrice = listingPrice.toString()
 
     // transaction = await contract.createMarketItem(nftaddress, tokenId, price, true, { value: listingPrice })
-    transaction = await contract.createMarketItem(nftaddress1155, tokenId, price, false, { value: listingPrice })
+    // transaction = await contract.createMarketItem(nftaddress1155, tokenId, price, false, { value: listingPrice })
+    transaction = await contract.createMarketItem(nftaddress1155, tokenId, price, false, [], { value: listingPrice })
+
     await transaction.wait()
     router.push('/')
   }

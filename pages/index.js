@@ -11,6 +11,7 @@ import {
 import NFT from '../artifacts/contracts/NFT.sol/NFT.json';
 import Market from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json';
 import NFT1155 from '../artifacts/contracts/NFT1155.sol/NFT1155.json'
+import { RampInstantSDK } from '@ramp-network/ramp-instant-sdk';
 
 /**
  * Querying the contract for marketplace items
@@ -26,7 +27,41 @@ export default function Home() {
   const [loadingState, setLoadingState] = useState('not-loaded')
   useEffect(() => {
     loadNFTs()
-  }, [])
+
+    // // *  Quick Integration */
+    // new RampInstantSDK({
+    //   // hostAppName: 'Ramp Demo',
+    //   // hostLogoUrl: 'https://rampnetwork.github.io/assets/misc/test-logo.png',
+    //   // variant: 'auto',
+
+
+    //   hostAppName: 'My NFT MarketPlace',
+    //   hostLogoUrl: 'https://rampnetwork.github.io/assets/misc/test-logo.png',
+    //   // hostApiKey: '8toxc899ajupmp2h87hm5audny7gqzc6xy5b98rg',
+    //   variant: 'auto',
+    // }).show();
+
+    //   /*
+    //  *  Advanced Integration
+    //  */
+    //   new RampInstantSDK({
+    //     hostAppName: 'Ramp Demo',
+    //     hostLogoUrl: 'https://rampnetwork.github.io/assets/misc/test-logo.png',
+    //     swapAmount: '1000000000000000000',
+    //     swapAsset: 'DAI',
+    //     userAddress: '0xe2E0256d6785d49eC7BadCD1D44aDBD3F6B0Ab58',
+    //     userEmailAddress: 'abc123@mailinator.com',
+    //     url: 'https://ri-widget-staging.firebaseapp.com/', // only specify the url if you want to use testnet widget versions,
+    //     // use variant: 'auto' for automatic mobile / desktop handling,
+    //     // 'hosted-auto' for automatic mobile / desktop handling in new window,
+    //     // 'mobile' to force mobile version
+    //     // 'desktop' to force desktop version (default)
+    //     variant: 'auto',
+    //   })
+    //     .on('*', console.log)
+    //     .show();
+    // }, [])
+  });
 
   async function loadNFTs() {
     /* create a generic provider and query for unsold market items */
@@ -47,7 +82,7 @@ export default function Home() {
     *  them as well as fetch their token metadata
     */
     const items = await Promise.all(data.map(async i => {
-     // // ERC721
+      // // ERC721
       // const tokenUri = await tokenContract.tokenURI(i.tokenId)
       // ERC1155
       const tokenUri = await tokenContract.uri(i.tokenId)
@@ -58,7 +93,7 @@ export default function Home() {
         price,
         tokenId: i.tokenId.toNumber(),
         seller: i.seller,
-        owner: i.owner,
+        owner: i.itemOwner,
         image: meta.data.image,
         name: meta.data.name,
         description: meta.data.description,
@@ -66,7 +101,7 @@ export default function Home() {
       return item
     }))
     setNfts(items)
-    setLoadingState('loaded') 
+    setLoadingState('loaded')
   }
 
   async function buyNft(nft) {
@@ -78,13 +113,18 @@ export default function Home() {
     const contract = new ethers.Contract(nftmarketaddress, Market.abi, signer)
 
     /* user will be prompted to pay the asking proces to complete the transaction */
-    const price = ethers.utils.parseUnits(nft.price.toString(), 'ether')   
+    const price = ethers.utils.parseUnits(nft.price.toString(), 'ether')
     // const transaction = await contract.createMarketSale(nftaddress, nft.tokenId, true, {
     //   value: price
     // })
-    const transaction = await contract.createMarketSale(nftaddress1155, nft.tokenId, false, {
-      value: price
-    })
+    // const transaction = await contract.createMarketSale(nftaddress1155, nft.tokenId, false, {
+    //   value: price
+    // })
+    const transaction = await contract.createMarketSale(nftaddress1155, nft.tokenId, false, ethers.utils.parseUnits('0', 'ether'), 
+    "0x0000000000000000000000000000000000000000", {
+       value: price 
+      })
+
     await transaction.wait()
     loadNFTs()
   }

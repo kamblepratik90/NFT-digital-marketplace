@@ -8,15 +8,22 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@appliedblockchain/chainlink-contracts": "0.0.4",
+    "@appliedblockchain/chainlink-plugins-fund-link": "0.0.1",
+    "@chainlink/contracts": "^0.3.1",
+    "@chainlink/test-helpers": "^0.0.7-alpha",
+    "@chainlink/token": "^1.1.0",
     "@nomiclabs/hardhat-ethers": "^2.0.4",
     "@nomiclabs/hardhat-waffle": "^2.0.2",
     "@openzeppelin/contracts": "^4.4.2",
+    "@ramp-network/ramp-instant-sdk": "^3.0.0",
     "axios": "^0.25.0",
     "chai": "^4.3.6",
     "dotenv": "^16.0.0",
     "ethereum-waffle": "^3.4.0",
     "ethers": "^5.5.4",
     "hardhat": "^2.8.3",
+    "hardhat-tracer": "^1.0.0-alpha.6",
     "ipfs-http-client": "^50.1.2",
     "next": "12.0.10",
     "react": "17.0.2",
@@ -28,7 +35,11 @@
     "autoprefixer": "^10.4.2",
     "eslint": "8.8.0",
     "eslint-config-next": "12.0.10",
+    "hardhat-deploy": "^0.9.29",
     "postcss": "^8.4.6",
     "tailwindcss": "^3.0.19"
+  },
+  "mocha": {
+    "timeout": 10000000
   }
 }

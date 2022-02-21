@@ -59,7 +59,7 @@ export default function CreatorDashboard() {
         price,
         tokenId: i.tokenId.toNumber(),
         seller: i.seller,
-        owner: i.owner,
+        owner: i.itemOwner,
         sold: i.sold,
         image: meta.data.image,
       }

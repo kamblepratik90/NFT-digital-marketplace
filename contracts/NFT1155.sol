@@ -43,7 +43,8 @@ contract NFT1155 is ERC1155, Ownable{
     }
 
     function setTokenURI(uint256 tokenId, string memory _uri) internal {
-        require(bytes(_uris[tokenId]).length == 0, "Cannnot set uri twice");
+        // This function can be made public in case of editing already minted NFT item
+        // require(bytes(_uris[tokenId]).length == 0, "Cannnot set uri twice");
         _uris[tokenId] = _uri;
     }
 
