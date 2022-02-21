@@ -255,7 +255,7 @@ describe("NFTMarket Accept Diff Tokens", function () {
     });
 
 
-    it.only("should accept Native token ", async () => {
+    it("should accept Native token ", async () => {
 
         console.log('supported buy tokens : ', await marketContract.getTokenList());
 

@@ -3,7 +3,7 @@ describe("NFTMarket", function() {
     it("Should create and execute market sales ERC1155", async function() {
       /* deploy the marketplace */
       const Market = await ethers.getContractFactory("NFTMarket")
-      const market = await Market.deploy()
+      const market = await Market.deploy([])
       await market.deployed()
       const marketAddress = market.address
   
@@ -25,14 +25,13 @@ describe("NFTMarket", function() {
       await nft1155.mintNFT("https://www.mytokenlocation4.com")
   
       /* put both tokens for sale */
-      await market.createMarketItem(nftContractAddress1155, 1, auctionPrice, false, { value: listingPrice })
-      await market.createMarketItem(nftContractAddress1155, 2, auctionPrice, false, { value: listingPrice })
-
+      await market.createMarketItem(nftContractAddress1155, 1, auctionPrice, false, [], { value: listingPrice })
+      await market.createMarketItem(nftContractAddress1155, 2, auctionPrice, false, [], { value: listingPrice })
   
       const [_, buyerAddress] = await ethers.getSigners()
   
       /* execute sale of token to another user */
-      await market.connect(buyerAddress).createMarketSale(nftContractAddress1155, 1, false, { value: auctionPrice})
+      await market.connect(buyerAddress).createMarketSale(nftContractAddress1155, 1, false, ethers.utils.parseUnits('0', 'ether'), "0x0000000000000000000000000000000000000000",{ value: auctionPrice})
   
       console.log('\n ERC1155 ************************** Available Market Items (sold) \n')
 
@@ -90,7 +89,7 @@ describe("NFTMarket", function() {
     it("Should create and execute market sales ERC721", async function() {
       /* deploy the marketplace */
       const Market = await ethers.getContractFactory("NFTMarket")
-      const market = await Market.deploy()
+      const market = await Market.deploy([])
       await market.deployed()
       const marketAddress = market.address
   
@@ -111,13 +110,13 @@ describe("NFTMarket", function() {
       await nft.createToken("https://www.mytokenlocation2.com")
   
       /* put both tokens for sale */
-      await market.createMarketItem(nftContractAddress, 1, auctionPrice, true, { value: listingPrice })
-      await market.createMarketItem(nftContractAddress, 2, auctionPrice, true, { value: listingPrice })
+      await market.createMarketItem(nftContractAddress, 1, auctionPrice, true, [], { value: listingPrice })
+      await market.createMarketItem(nftContractAddress, 2, auctionPrice, true, [], { value: listingPrice })
   
       const [_, buyerAddress] = await ethers.getSigners()
   
       /* execute sale of token to another user */
-      await market.connect(buyerAddress).createMarketSale(nftContractAddress, 1, true, { value: auctionPrice})
+      await market.connect(buyerAddress).createMarketSale(nftContractAddress, 1, true, ethers.utils.parseUnits('0', 'ether'), "0x0000000000000000000000000000000000000000", { value: auctionPrice})
 
       console.log('\n  ERC721 ************************** Available Market Items (sold) \n')
 
